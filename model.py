@@ -125,6 +125,7 @@ class GatedAttention(nn.Module):
 
         Y_prob = self.classifier(M)
         Y_hat = torch.ge(Y_prob, 0.5).float()
+
         return Y_prob, Y_hat, A
 
     # AUXILIARY METHODS

@@ -13,8 +13,8 @@ PyTorch implementation of our paper "Attention-based Deep Multiple Instance Lear
 Installation
 ------------
 
-Installing Pytorch 0.3.1, using pip or conda, should resolve all dependencies.
-Tested with Python 2.7, but should work with 3.x as well.
+Installing Pytorch 1.3.0, using pip or conda, should resolve all dependencies.
+Tested with Python 3.7.
 Tested on both CPU and GPU.
 
 
@@ -23,7 +23,7 @@ Content
 
 The code can be used to run the MNIST-BAGS experiment, see Section 4.2 and Figure 1 in our [paper](https://arxiv.org/pdf/1802.04712.pdf).
 In order to have a small and concise experimental setup, the code has the following limitation:
-+ Mean bag length parameter shouldn't be much larger than 10, for larger numbers the training dataset will become unbalanced very quickly. You can run the data loader on its own to check, see __main__ part of dataloader.py
++ Mean bag length parameter shouldn't be much larger than 10, for larger numbers the training dataset will become unbalanced very quickly. You can run the data loader on its own to check, see __main__ part of `dataloader.py`
 + No validation set is used during training, no early stopping
 
 __NOTE__: In order to run experiments on the histopathology datasets, please download datasets [Breast Cancer](http://bioimage.ucsb.edu/research/bio-segmentation) and [Colon Cancer](https://warwick.ac.uk/fac/sci/dcs/research/tia/data/crchistolabelednucleihe/). In the histopathology experiments we used a similar model to the model in `model.py`, please see the [paper](https://arxiv.org/pdf/1802.04712.pdf) for details.
@@ -37,7 +37,7 @@ If run as main, it computes the ratio of positive bags as well as the mean, max 
 `mnist_bags_loader.py`: Added the original data loader we used in the experiments. It can handle any bag length without the dataset becoming unbalanced. It is most probably not the most efficient way to create the bags. Furthermore it is only test for the case that the target number is ‘9’.
 
 `main.py`: Trains a small CNN with the Adam optimization algorithm.
-The training takes 20 epoches. Last, the accuracy and loss of the model on the test set is computed.
+The training takes 20 epochs. Last, the accuracy and loss of the model on the test set is computed.
 In addition, a subset of the bags labels and instance labels are printed.
 
 `model.py`: The model is a modified LeNet-5, see <http://yann.lecun.com/exdb/publis/pdf/lecun-98.pdf>.

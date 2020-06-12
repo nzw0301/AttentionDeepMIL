@@ -1,12 +1,11 @@
 from __future__ import print_function
 
-import numpy as np
-
 import argparse
+
+import numpy as np
 import torch
-import torch.utils.data as data_utils
 import torch.optim as optim
-from torch.autograd import Variable
+import torch.utils.data as data_utils
 
 from dataloader import MnistBags
 from model import Attention, GatedAttention
@@ -67,9 +66,9 @@ test_loader = data_utils.DataLoader(MnistBags(target_number=args.target_number,
                                     **loader_kwargs)
 
 print('Init Model')
-if args.model=='attention':
+if args.model == 'attention':
     model = Attention()
-elif args.model=='gated_attention':
+elif args.model == 'gated_attention':
     model = GatedAttention()
 if args.cuda:
     model.cuda()
@@ -85,7 +84,7 @@ def train(epoch):
         bag_label = label[0]
         if args.cuda:
             data, bag_label = data.cuda(), bag_label.cuda()
-        data, bag_label = Variable(data), Variable(bag_label)
+        # data, bag_label = torch.tensor(data), torch.tensor(bag_label)
 
         # reset gradients
         optimizer.zero_grad()
@@ -115,7 +114,7 @@ def test():
         instance_labels = label[1]
         if args.cuda:
             data, bag_label = data.cuda(), bag_label.cuda()
-        data, bag_label = Variable(data), Variable(bag_label)
+        data, bag_label = torch.tensor(data), torch.tensor(bag_label)
         loss, attention_weights = model.calculate_objective(data, bag_label)
         test_loss += loss.data[0]
         error, predicted_label = model.calculate_classification_error(data, bag_label)
@@ -124,7 +123,7 @@ def test():
         if batch_idx < 5:  # plot bag labels and instance labels for first 5 bags
             bag_level = (bag_label.cpu().data.numpy()[0], int(predicted_label.cpu().data.numpy()[0][0]))
             instance_level = list(zip(instance_labels.numpy()[0].tolist(),
-                                 np.round(attention_weights.cpu().data.numpy()[0], decimals=3).tolist()))
+                                      np.round(attention_weights.cpu().data.numpy()[0], decimals=3).tolist()))
 
             print('\nTrue Bag Label, Predicted Bag Label: {}\n'
                   'True Instance Labels, Attention Weights: {}'.format(bag_level, instance_level))

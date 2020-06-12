@@ -1,7 +1,6 @@
 """Pytorch Dataset object that loads perfectly balanced MNIST dataset in bag form."""
 
 import numpy as np
-import matplotlib.pyplot as plt
 import torch
 import torch.utils.data as data_utils
 from torchvision import datasets, transforms
@@ -32,8 +31,8 @@ class MnistBags(data_utils.Dataset):
                                                                 train=True,
                                                                 download=True,
                                                                 transform=transforms.Compose([
-                                                                         transforms.ToTensor(),
-                                                                         transforms.Normalize((0.1307,), (0.3081,))])),
+                                                                    transforms.ToTensor(),
+                                                                    transforms.Normalize((0.1307,), (0.3081,))])),
                                                  batch_size=self.num_in_train,
                                                  shuffle=False)
 
@@ -84,8 +83,8 @@ class MnistBags(data_utils.Dataset):
                                                                train=False,
                                                                download=True,
                                                                transform=transforms.Compose([
-                                                                    transforms.ToTensor(),
-                                                                    transforms.Normalize((0.1307,), (0.3081,))])),
+                                                                   transforms.ToTensor(),
+                                                                   transforms.Normalize((0.1307,), (0.3081,))])),
                                                 batch_size=self.num_in_test,
                                                 shuffle=False)
 

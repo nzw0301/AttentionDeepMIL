@@ -27,6 +27,7 @@ class MnistBags(data_utils.Dataset):
         seed: int. numpy's seed value.
         train: bool. flag value whether train or test.
         """
+
         assert target_number in range(0, 10)
         assert mean_bag_length > 1
         assert std_bag_length > 0.
@@ -77,7 +78,7 @@ class MnistBags(data_utils.Dataset):
             indices = torch.LongTensor(self.r.randint(0, self.num_samples, bag_length))
 
             labels_in_bag = all_labels[indices]
-            labels_in_bag = labels_in_bag == self.target_number
+            labels_in_bag = (labels_in_bag == self.target_number).type(torch.FloatTensor)
 
             bags_list.append(all_imgs[indices])
             labels_list.append(labels_in_bag)

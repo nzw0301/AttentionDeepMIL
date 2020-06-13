@@ -124,7 +124,7 @@ def test():
     model.eval()
     test_loss = 0.
     test_error = 0.
-    with torch.no_grad:
+    with torch.no_grad():
         for batch_idx, (data, label) in enumerate(test_loader):
             bag_label = label[0]
             instance_labels = label[1]
@@ -137,7 +137,7 @@ def test():
             error = model.calculate_classification_error(predicted_label, bag_label)
             test_error += error
 
-            if batch_idx < 5:  # plot bag labels and instance labels for first 5 bags
+            if batch_idx < 5:  # show bag labels and instance labels for first 5 bags
                 bag_level = (bag_label.item(), int(predicted_label.item()))
                 instance_level = list(zip(instance_labels.numpy()[0],
                                           np.round(attention_weights.data.numpy()[0], decimals=3)))

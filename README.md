@@ -3,6 +3,113 @@ Attention-based Deep Multiple Instance Learning
 
 by Maximilian Ilse (<ilse.maximilian@gmail.com>), Jakub M. Tomczak (<jakubmkt@gmail.com>) and Max Welling
 
+Modifications (by nzw0301)
+-------------------------
+This repo is a fork of [Attention-based Deep Multiple Instance Learning](https://github.com/AMLab-Amsterdam/AttentionDeepMIL).
+Main differences are
+
+- Support `PyTorch 1.3.1` (I suppose this repo works by using newer PyTorch as well)
+- Tiny refactorings
+
+Examples (by nzw0301)
+---------------------
+
+The default model is based on an attention model without gated attention:
+
+```bash
+$ python main.py
+Load Train and Test Set
+Init Model
+Start Training
+Epoch: 1, Loss: 0.6876, Train error: 0.3850
+Epoch: 2, Loss: 0.6480, Train error: 0.3700
+Epoch: 3, Loss: 0.4586, Train error: 0.2250
+Epoch: 4, Loss: 0.2609, Train error: 0.1050
+Epoch: 5, Loss: 0.1443, Train error: 0.0450
+Epoch: 6, Loss: 0.1565, Train error: 0.0500
+Epoch: 7, Loss: 0.0774, Train error: 0.0350
+Epoch: 8, Loss: 0.0489, Train error: 0.0150
+Epoch: 9, Loss: 0.0938, Train error: 0.0150
+Epoch: 10, Loss: 0.0196, Train error: 0.0050
+Epoch: 11, Loss: 0.0698, Train error: 0.0250
+Epoch: 12, Loss: 0.0402, Train error: 0.0100
+Epoch: 13, Loss: 0.0091, Train error: 0.0000
+Epoch: 14, Loss: 0.0052, Train error: 0.0000
+Epoch: 15, Loss: 0.0182, Train error: 0.0100
+Epoch: 16, Loss: 0.0010, Train error: 0.0000
+Epoch: 17, Loss: 0.0005, Train error: 0.0000
+Epoch: 18, Loss: 0.0003, Train error: 0.0000
+Epoch: 19, Loss: 0.0002, Train error: 0.0000
+Epoch: 20, Loss: 0.0002, Train error: 0.0000
+Start Testing
+
+True Bag Label, Predicted Bag Label: (1.0, 1)
+True Instance Labels, Attention Weights: [(0.0, 0.0), (1.0, 0.513), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (1.0, 0.486)]
+
+True Bag Label, Predicted Bag Label: (1.0, 1)
+True Instance Labels, Attention Weights: [(0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (1.0, 0.497), (0.0, 0.0), (1.0, 0.503), (0.0, 0.0), (0.0, 0.0)]
+
+True Bag Label, Predicted Bag Label: (1.0, 1)
+True Instance Labels, Attention Weights: [(0.0, 0.007), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.002), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (1.0, 0.991), (0.0, 0.0)]
+
+True Bag Label, Predicted Bag Label: (1.0, 1)
+True Instance Labels, Attention Weights: [(0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (1.0, 1.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0)]
+
+True Bag Label, Predicted Bag Label: (1.0, 1)
+True Instance Labels, Attention Weights: [(0.0, 0.0), (1.0, 1.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0)]
+
+Test Set, Loss: 0.5433, Test error: 0.1000
+```
+
+---
+
+Pass `--gated` flag when you use the gated attention model:
+
+```bash
+$ python main.py --gated
+Load Train and Test Set
+Init Model
+Start Training
+Epoch: 1, Loss: 0.6758, Train error: 0.3850
+Epoch: 2, Loss: 0.6116, Train error: 0.3250
+Epoch: 3, Loss: 0.4499, Train error: 0.1800
+Epoch: 4, Loss: 0.2565, Train error: 0.1100
+Epoch: 5, Loss: 0.1892, Train error: 0.0650
+Epoch: 6, Loss: 0.1374, Train error: 0.0450
+Epoch: 7, Loss: 0.1161, Train error: 0.0350
+Epoch: 8, Loss: 0.0611, Train error: 0.0300
+Epoch: 9, Loss: 0.1216, Train error: 0.0450
+Epoch: 10, Loss: 0.0685, Train error: 0.0200
+Epoch: 11, Loss: 0.0515, Train error: 0.0250
+Epoch: 12, Loss: 0.0219, Train error: 0.0100
+Epoch: 13, Loss: 0.0019, Train error: 0.0000
+Epoch: 14, Loss: 0.0006, Train error: 0.0000
+Epoch: 15, Loss: 0.0004, Train error: 0.0000
+Epoch: 16, Loss: 0.0003, Train error: 0.0000
+Epoch: 17, Loss: 0.0002, Train error: 0.0000
+Epoch: 18, Loss: 0.0002, Train error: 0.0000
+Epoch: 19, Loss: 0.0002, Train error: 0.0000
+Epoch: 20, Loss: 0.0001, Train error: 0.0000
+Start Testing
+
+True Bag Label, Predicted Bag Label: (1.0, 1)
+True Instance Labels, Attention Weights: [(0.0, 0.0), (1.0, 0.627), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.005), (0.0, 0.0), (1.0, 0.368)]
+
+True Bag Label, Predicted Bag Label: (1.0, 1)
+True Instance Labels, Attention Weights: [(0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (1.0, 0.481), (0.0, 0.0), (1.0, 0.519), (0.0, 0.0), (0.0, 0.0)]
+
+True Bag Label, Predicted Bag Label: (1.0, 1)
+True Instance Labels, Attention Weights: [(0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (1.0, 0.999), (0.0, 0.0)]
+
+True Bag Label, Predicted Bag Label: (1.0, 1)
+True Instance Labels, Attention Weights: [(0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (1.0, 1.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0)]
+
+True Bag Label, Predicted Bag Label: (1.0, 1)
+True Instance Labels, Attention Weights: [(0.0, 0.0), (1.0, 0.999), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0)]
+
+Test Set, Loss: 0.2884, Test error: 0.0600
+```
+
 Overview
 --------
 

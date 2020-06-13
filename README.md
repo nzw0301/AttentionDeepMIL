@@ -13,7 +13,7 @@ PyTorch implementation of our paper "Attention-based Deep Multiple Instance Lear
 Installation
 ------------
 
-Installing PyTorch 1.3.0, using pip or conda, should resolve all dependencies.
+Installing PyTorch 1.3.1, using pip or conda, should resolve all dependencies.
 Tested with Python 3.7.
 Tested on both CPU and GPU.
 

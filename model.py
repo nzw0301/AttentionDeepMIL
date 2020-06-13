@@ -3,12 +3,36 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-class Attention(nn.Module):
-    def __init__(self):
-        super(Attention, self).__init__()
-        self.L = 500
-        self.D = 128
-        self.K = 1
+class BaseAttention(nn.Module):
+    def __init__(self, L: int = 500, D: int = 128, K: int =1):
+        super(BaseAttention, self).__init__()
+        self.L = L
+        self.D = D
+        self.K = K
+
+    def forward(self, x):
+        raise NotImplementedError
+
+    # AUXILIARY METHODS
+    def calculate_classification_error(self, X, Y):
+        Y = Y.float()
+        _, Y_hat, _ = self.forward(X)
+        error = 1. - Y_hat.eq(Y).float().mean().item()
+
+        return error, Y_hat
+
+    def calculate_objective(self, X, Y):
+        Y = Y.float()
+        Y_prob, _, A = self.forward(X)
+        Y_prob = torch.clamp(Y_prob, min=1e-5, max=1. - 1e-5)
+        neg_log_likelihood = -1. * (Y * torch.log(Y_prob) + (1. - Y) * torch.log(1. - Y_prob))  # negative log bernoulli
+
+        return neg_log_likelihood, A
+
+
+class Attention(BaseAttention):
+    def __init__(self, L=500, D=128, K=1):
+        super(Attention, self).__init__(L, D, K)
 
         self.feature_extractor_part1 = nn.Sequential(
             nn.Conv2d(1, 20, kernel_size=5),
@@ -53,29 +77,10 @@ class Attention(nn.Module):
 
         return Y_prob, Y_hat, A
 
-    # AUXILIARY METHODS
-    def calculate_classification_error(self, X, Y):
-        Y = Y.float()
-        _, Y_hat, _ = self.forward(X)
-        error = 1. - Y_hat.eq(Y).float().mean().item()
 
-        return error, Y_hat
-
-    def calculate_objective(self, X, Y):
-        Y = Y.float()
-        Y_prob, _, A = self.forward(X)
-        Y_prob = torch.clamp(Y_prob, min=1e-5, max=1. - 1e-5)
-        neg_log_likelihood = -1. * (Y * torch.log(Y_prob) + (1. - Y) * torch.log(1. - Y_prob))  # negative log bernoulli
-
-        return neg_log_likelihood, A
-
-
-class GatedAttention(nn.Module):
-    def __init__(self):
-        super(GatedAttention, self).__init__()
-        self.L = 500
-        self.D = 128
-        self.K = 1
+class GatedAttention(BaseAttention):
+    def __init__(self, L=500, D=128, K=1):
+        super(GatedAttention, self).__init__(L, D, K)
 
         self.feature_extractor_part1 = nn.Sequential(
             nn.Conv2d(1, 20, kernel_size=5),
@@ -127,19 +132,3 @@ class GatedAttention(nn.Module):
         Y_hat = torch.ge(Y_prob, 0.5).float()
 
         return Y_prob, Y_hat, A
-
-    # AUXILIARY METHODS
-    def calculate_classification_error(self, X, Y):
-        Y = Y.float()
-        _, Y_hat, _ = self.forward(X)
-        error = 1. - Y_hat.eq(Y).float().mean().item()
-
-        return error, Y_hat
-
-    def calculate_objective(self, X, Y):
-        Y = Y.float()
-        Y_prob, _, A = self.forward(X)
-        Y_prob = torch.clamp(Y_prob, min=1e-5, max=1. - 1e-5)
-        neg_log_likelihood = -1. * (Y * torch.log(Y_prob) + (1. - Y) * torch.log(1. - Y_prob))  # negative log bernoulli
-
-        return neg_log_likelihood, A
